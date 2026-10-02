@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; connect-src 'none'"><title>Connect TikTok — scannaclips</title><style>body{background:#f0f7ff;color:#182c46;font:17px/1.65 system-ui;margin:0;padding:30px}main{max-width:680px;margin:60px auto;background:white;padding:35px;border-radius:24px}h1{line-height:1.2}textarea{width:100%;box-sizing:border-box;min-height:130px;padding:15px;border:1px solid #aacbed;border-radius:10px;font:14px monospace}button{background:#235e9e;color:white;padding:13px 24px;border:0;border-radius:12px;font:inherit;margin-top:20px}small{display:block;margin-top:20px}</style></head><body><main><h1>Finish connecting TikTok</h1><p id="message">This page completes a login started from your local scannaclips app.</p><section id="result" hidden><p>Copy this temporary response. Return to <strong>scannaclips → Connections</strong>, paste it in <strong>Connection response</strong>, and click <strong>Finish connection</strong>.</p><label for="response">Private connection response</label><textarea id="response" readonly spellcheck="false"></textarea><button id="copy" type="button">Copy connection response</button><small>This is a temporary login response. Do not send it in chat, publish it or share it with anyone.</small></section><p id="copied" role="status"></p></main><script>
+const params=new URLSearchParams(location.search);
+const response=document.getElementById('response');
+const state=params.get('state');
+const code=params.get('code');
+const error=params.get('error');
+history.replaceState(null,'',location.pathname);
+if(state&&(code||error)){
+ const safe=new URLSearchParams({state});
+ if(code)safe.set('code',code);
+ if(error)safe.set('error',error);
+ response.value='https://scannatarecords.github.io/scannaclips/tiktok-callback.html?'+safe.toString();
+ document.getElementById('result').hidden=false;
+ if(error)document.getElementById('message').textContent='TikTok did not authorize the connection. Return the response to scannaclips or start again.';
+}else document.getElementById('message').textContent='No login response received. Start TikTok connection from the local scannaclips app first.';
+document.getElementById('copy').onclick=async()=>{try{await navigator.clipboard.writeText(response.value);document.getElementById('copied').textContent='Copied. Paste only into your local scannaclips app.'}catch{response.focus();response.select();document.getElementById('copied').textContent='Select and copy the response, then paste it into scannaclips.'}};
+</script></body></html>
